@@ -114,73 +114,76 @@ export default class DashBoard extends React.Component {
       <Container>
         <Header leftComponent={{ icon: "menu", color: "#fff" }} centerComponent={{ text: "Seleccione las horas", style: { color: "#fff" } }} rightComponent={{ icon: "home", color: "#fff" }} />
         <Content contentContainerStyle={styles.container}>
-          <Card containerStyle={{ backgroundColor: "#ffffff" }}>
-            <Calendar
-              // Initially visible month. Default = Date()
-              // current={'2012-03-01'}
-              // Minimum date that can be selected, dates before minDate will be grayed out. Default = undefined
-              minDate={new Date()}
-              // Maximum date that can be selected, dates after maxDate will be grayed out. Default = undefined
-              maxDate={new Date(2019, 1, 1)}
-              // Handler which gets executed on day press. Default = undefined
-              // onDayPress={day => {
-              //   console.log("var ", _today);
-              //   console.log("selected day", day);
-              // }}
-              onDayPress={this.onDaySelect}
-              // Handler which gets executed on day long press. Default = undefined
-              onDayLongPress={day => {
-                console.log("selected day", day);
-              }}
-              // Month format in calendar title. Formatting values: http://arshaw.com/xdate/#Formatting
-              monthFormat={"dd-MM-yyyy"}
-              // Handler which gets executed when visible month changes in calendar. Default = undefined
-              onMonthChange={month => {
-                console.log("month changed", month);
-              }}
-              // Hide month navigation arrows. Default = false
-              hideArrows={false}
-              // Replace default arrows with custom ones (direction can be 'left' or 'right')
-              renderArrow={this._renderArrow}
-              // Do not show days of other months in month page. Default = false
-              hideExtraDays={false}
-              // If hideArrows=false and hideExtraDays=false do not switch month when tapping on greyed out
-              // day from another month that is visible in calendar page. Default = false
-              disableMonthChange={true}
-              // If firstDay=1 week starts from Monday. Note that dayNames and dayNamesShort should still start from Sunday.
-              firstDay={1}
-              // Hide day names. Default = false
-              hideDayNames={false}
-              // Show week numbers to the left. Default = false
-              showWeekNumbers={true}
-              // Handler which gets executed when press arrow icon left. It receive a callback can go back month
-              onPressArrowLeft={substractMonth => substractMonth()}
-              // Handler which gets executed when press arrow icon left. It receive a callback can go next month
-              onPressArrowRight={addMonth => addMonth()}
-              markedDates={this.state._markedDates}
-            />
-          </Card>
+          <View style={styles.calendar}>
+            <Card containerStyle={{ backgroundColor: "#ffffff" }}>
+              <Calendar
+                // Initially visible month. Default = Date()
+                // current={'2012-03-01'}
+                // Minimum date that can be selected, dates before minDate will be grayed out. Default = undefined
+                minDate={new Date()}
+                // Maximum date that can be selected, dates after maxDate will be grayed out. Default = undefined
+                maxDate={new Date(2019, 1, 1)}
+                // Handler which gets executed on day press. Default = undefined
+                // onDayPress={day => {
+                //   console.log("var ", _today);
+                //   console.log("selected day", day);
+                // }}
+                onDayPress={this.onDaySelect}
+                // Handler which gets executed on day long press. Default = undefined
+                onDayLongPress={day => {
+                  console.log("selected day", day);
+                }}
+                // Month format in calendar title. Formatting values: http://arshaw.com/xdate/#Formatting
+                monthFormat={"dd-MM-yyyy"}
+                // Handler which gets executed when visible month changes in calendar. Default = undefined
+                onMonthChange={month => {
+                  console.log("month changed", month);
+                }}
+                // Hide month navigation arrows. Default = false
+                hideArrows={false}
+                // Replace default arrows with custom ones (direction can be 'left' or 'right')
+                renderArrow={this._renderArrow}
+                // Do not show days of other months in month page. Default = false
+                hideExtraDays={false}
+                // If hideArrows=false and hideExtraDays=false do not switch month when tapping on greyed out
+                // day from another month that is visible in calendar page. Default = false
+                disableMonthChange={true}
+                // If firstDay=1 week starts from Monday. Note that dayNames and dayNamesShort should still start from Sunday.
+                firstDay={1}
+                // Hide day names. Default = false
+                hideDayNames={false}
+                // Show week numbers to the left. Default = false
+                showWeekNumbers={true}
+                // Handler which gets executed when press arrow icon left. It receive a callback can go back month
+                onPressArrowLeft={substractMonth => substractMonth()}
+                // Handler which gets executed when press arrow icon left. It receive a callback can go next month
+                onPressArrowRight={addMonth => addMonth()}
+                markedDates={this.state._markedDates}
+              />
+              <Divider />
+            </Card>
+          </View>
           <View style={styles.timeContainer}>
-            <View style={{ flexDirection: "row" }}>
-              <Text style={styles.title}>Hora de inicio</Text>
+            {/* Hora de inicio */}
+            <View style={{ flexDirection: "column", width: 120 }}>
               <TouchableOpacity onPress={this._showDateTimePickerStartHour}>
-                <Icon name="add-circle" style={styles.titleIcon} />
+                <Text style={styles.title}>Inicio</Text>
+                {/* <Icon name="add-circle" style={styles.titleIcon} /> */}
               </TouchableOpacity>
+              <Text style={styles.text}>{this.state.startHour.toString().substr(16, 5)}</Text>
+              <DateTimePicker mode="time" titleIOS="Selecciona hora de inicio" isVisible={this.state.isDateTimePickerVisibleStartHour} onConfirm={this._handleStartHour} onCancel={this._hideDateTimePickerStartHour} />
             </View>
-            <Text style={styles.text}>{this.state.startHour.toString().substr(16, 5)}</Text>
-          </View>
-          <DateTimePicker mode="time" titleIOS="Selecciona hora de inicio" isVisible={this.state.isDateTimePickerVisibleStartHour} onConfirm={this._handleStartHour} onCancel={this._hideDateTimePickerStartHour} />
-          <Divider />
-          <View style={styles.timeContainer}>
-            <View style={{ flexDirection: "row" }}>
-              <Text style={styles.title}>Hora de salida</Text>
+            <Icon name="ios-arrow-forward-outline" style={styles.titleIcon} />
+            {/* Hora de salda */}
+            <View style={{ flexDirection: "column", width: 120, alignContent: "center" }}>
               <TouchableOpacity onPress={this._showDateTimePickerEndHour}>
-                <Icon name="add-circle" style={styles.titleIcon} />
+                <Text style={styles.title}>Salida</Text>
+                {/* <Icon name="add-circle" style={styles.titleIcon} /> */}
               </TouchableOpacity>
+              <Text style={styles.text}>{this.state.endHour.toString().substr(16, 5)}</Text>
+              <DateTimePicker mode="time" titleIOS="Selecciona hora de inicio" isVisible={this.state.isDateTimePickerVisibleEndHour} onConfirm={this._handleEndHour} onCancel={this._hideDateTimePickerEndtHour} />
             </View>
-            <Text style={styles.text}>{this.state.endHour.toString().substr(16, 5)}</Text>
           </View>
-          <DateTimePicker mode="time" titleIOS="Selecciona hora de inicio" isVisible={this.state.isDateTimePickerVisibleEndHour} onConfirm={this._handleEndHour} onCancel={this._hideDateTimePickerEndtHour} />
         </Content>
       </Container>
     );
@@ -190,29 +193,46 @@ export default class DashBoard extends React.Component {
 const styles = StyleSheet.create({
   container: {
     justifyContent: "center",
-    alignContent: "center"
+    alignContent: "center",
+    flex: 1
   },
   picker: {
     backgroundColor: "#E5E5E5"
   },
   title: {
     ...systemWeights.thin,
-    fontSize: 28
+    fontSize: 28,
+    paddingLeft: 10,
+    alignSelf: "flex-start",
+    color: "#30384C"
   },
   text: {
     ...systemWeights.light,
     fontSize: 28,
-    paddingRight: 15
+    paddingRight: 15,
+    alignSelf: "flex-end"
   },
   timeContainer: {
     flexDirection: "row",
     justifyContent: "space-between",
-    alignItems: "center"
+    borderTopColor: "black",
+    borderWidth: 0.5,
+    width: "100%",
+    height: 90,
+    position: "absolute",
+    bottom: 0
   },
   titleIcon: {
     ...systemWeights.thin,
-    paddingLeft: 5,
     fontSize: 20,
-    paddingTop: 10
+    justifyContent: "center",
+    alignSelf: "center"
+  },
+  calendar: {
+    width: "100%",
+    justifyContent: "center",
+    alignItems: "center",
+    position: "absolute",
+    top: 0
   }
 });
