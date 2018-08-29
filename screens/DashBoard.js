@@ -200,11 +200,12 @@ const styles = StyleSheet.create({
     backgroundColor: "#E5E5E5"
   },
   title: {
-    ...systemWeights.thin,
-    fontSize: 28,
+    ...systemWeights.light,
+    fontSize: 22,
     paddingLeft: 10,
     alignSelf: "flex-start",
-    color: "#30384C"
+    color: "#30384C",
+    opacity: 0.6
   },
   text: {
     ...systemWeights.light,

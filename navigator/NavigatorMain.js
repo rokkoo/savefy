@@ -1,25 +1,26 @@
 import React from "react";
 import { createBottomTabNavigator } from "react-navigation";
-import { Setting, Login, DashBoard } from "../screens";
+import { Setting, Login, DashBoard, Grafics } from "../screens";
 import { Icon } from "react-native-elements";
 import { Ionicons } from "@expo/vector-icons";
 
 const TabNavigator = createBottomTabNavigator(
   {
     DashBoard: DashBoard,
-    Setting: Setting
+    Setting: Setting,
+    Grafics
   },
   {
     navigationOptions: ({ navigation }) => ({
       tabBarIcon: ({ focused, tintColor }) => {
         const { routeName } = navigation.state;
         let iconName;
-        if (routeName === "Home") {
+        if (routeName === "DashBoard") {
           iconName = `home`;
         } else if (routeName === "Login") {
           iconName = `favorite`;
-        } else if (routeName === "Profile") {
-          iconName = `ios-person`;
+        } else if (routeName === "Grafics") {
+          iconName = `home`;
         } else if (routeName === "Setting") {
           iconName = `settings`;
         }
