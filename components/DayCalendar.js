@@ -1,7 +1,10 @@
 import React, { Component } from "react";
 import { View, Text } from "react-native";
+import { connect } from "react-redux";
 
 import moment from "moment";
+import "moment/locale/es";
+
 import { Calendar, CalendarList, Agenda, LocaleConfig, Arrow } from "react-native-calendars";
 import { Card, Divider } from "react-native-elements";
 
@@ -12,14 +15,24 @@ const _maxDate = moment()
   .add(15, "days")
   .format(_format);
 
+const monthNamesShort = ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"];
+const dayNamesShort = {
+  lunes: "Lun",
+  martes: "Mar",
+  miércoles: "Mier",
+  jueves: "Jue",
+  viernes: "Vier",
+  sábado: "Sab",
+  domingo: "Dom"
+};
 LocaleConfig.locales["es"] = {
   monthNames: ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"],
-  monthNamesShort: ["Janv.", "Févr.", "Mars", "Avril", "Mai", "Juin", "Juil.", "Août", "Sept.", "Oct.", "Nov.", "Déc."],
+  monthNamesShort: ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"],
   dayNames: ["Domingo", "Luenes", "Martes", "Miercoles", "Jueves", "Viernes", "Sábado"],
   dayNamesShort: ["Dom", "Lun", "Mar", "Mier", "Jue", "Vier", "Sab"]
 };
 
-export default class DayCalendar extends Component {
+class DayCalendar extends Component {
   // It is not possible to select some to current day.
   initialState = {
     [_today]: { selected: true, marked: true, selectedColor: "#1CBFE2" }
@@ -45,6 +58,8 @@ export default class DayCalendar extends Component {
   /** Seleccionamos un dia del calendario */
   onDaySelect = day => {
     const _selectedDay = moment(day.dateString).format("YYYY-MM-DD");
+    let nombreDia = dayNamesShort[moment(day.dateString).format("dddd")];
+    this.props.changeDate(`${nombreDia}, ${monthNamesShort[day.month - 1]} ${day.day}`);
     if (this.state._markedDates[_selectedDay]) {
       // Already in marked dates, so reverse current marked state
       marked = !this.state._markedDates[_selectedDay].marked;
@@ -57,6 +72,8 @@ export default class DayCalendar extends Component {
   };
 
   render() {
+    const { date } = this.props;
+    console.log("hora props ", date);
     return (
       <Card containerStyle={{ backgroundColor: "#ffffff" }}>
         <Calendar
@@ -124,8 +141,25 @@ export default class DayCalendar extends Component {
           onPressArrowRight={addMonth => addMonth()}
           markedDates={this.state._markedDates}
         />
-        {/* <Divider /> */}
+        {/* <Divider / */}
       </Card>
     );
   }
 }
+
+function mapStateToProps(state) {
+  return {
+    date: state.date
+  };
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    changeDate: newDate => dispatch({ type: "SET_DATE", payload: newDate })
+  };
+}
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(DayCalendar);
